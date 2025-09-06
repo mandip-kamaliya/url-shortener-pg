@@ -4,8 +4,10 @@ import express from "express";
 import sequelize from './config/database.js';
 import Url from './models/url.js';
 import { nanoid } from 'nanoid';
-const app = express();
+import validUrl from "valid-url";
 
+const app = express();
+app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
 
@@ -30,7 +32,7 @@ async function startServer(){
 }
 startServer();
 
-app.post("/api/shorten",async ()=>{
+app.post("/api/shorten",async (req,res)=>{
    const {originalUrl} = req.body;
    const Base_URL = process.env.Base_URL;
     if (!validUrl.isUri(originalUrl)) {
@@ -38,7 +40,7 @@ app.post("/api/shorten",async ()=>{
     }
 
     try {
-      const url = await Url.findOne({where:{originalUrl}});
+      let url = await Url.findOne({where:{originalUrl}});
       if(url){
         return res.status(200).json(url);
       }
@@ -47,6 +49,7 @@ app.post("/api/shorten",async ()=>{
         originalUrl,
         shortCode
       });
+      return res.status(201).json(url)
     } catch (error) {
       console.log(error);
       return res.status(500).json("Server Error!!");
