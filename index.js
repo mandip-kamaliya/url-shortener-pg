@@ -28,3 +28,16 @@ async function startServer(){
   }
 }
 startServer();
+
+app.post("/api/shorten",()=>{
+   const {originalUrl} = req.body;
+    if (!validUrl.isUri(originalUrl)) {
+      return res.status(400).json("url is not valid");
+    }
+
+    try {
+      
+    } catch (error) {
+      
+    }
+})
