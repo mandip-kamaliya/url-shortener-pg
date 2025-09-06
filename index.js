@@ -3,6 +3,7 @@ import 'dotenv/config';
 import express from "express";
 import sequelize from './config/database.js';
 import Url from './models/url.js';
+import { nanoid } from 'nanoid';
 const app = express();
 
 
@@ -29,15 +30,25 @@ async function startServer(){
 }
 startServer();
 
-app.post("/api/shorten",()=>{
+app.post("/api/shorten",async ()=>{
    const {originalUrl} = req.body;
+   const Base_URL = process.env.Base_URL;
     if (!validUrl.isUri(originalUrl)) {
       return res.status(400).json("url is not valid");
     }
 
     try {
-      
+      const url = await Url.findOne({where:{originalUrl}});
+      if(url){
+        return res.status(200).json(url);
+      }
+      const shortCode = nanoid(7);
+      url = await Url.create({
+        originalUrl,
+        shortCode
+      });
     } catch (error) {
-      
+      console.log(error);
+      return res.status(500).json("Server Error!!");
     }
 })
