@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
   res.send('URL Shortener API is running!');
 });
 
-app.get("api/:shortCode",async (req,res)=>{
+app.get("/api/:shortCode",async (req,res)=>{
     
    try {
         const url = await Url.findOne({where:{shortCode:req.params.shortCode}});
