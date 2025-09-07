@@ -15,7 +15,21 @@ app.get('/', (req, res) => {
   res.send('URL Shortener API is running!');
 });
 
+app.get("api/:shortCode",async (req,res)=>{
+    
+   try {
+        const url = await Url.findOne({where:{shortCode:req.params.shortCode}});
 
+     if(url){
+       return res.redirect(url.originalUrl);
+     }else{
+       res.status(404).json("Url not found!!");
+     }
+   } catch (error) {
+    console.error(error);
+    return res.status(500).json("Server Error");
+   }
+})
 
 async function startServer(){
   try {
