@@ -10,6 +10,12 @@ const Url = sequelize.define("Url",{
         type:DataTypes.STRING,
         allowNull:false,
         unique:true
+    },
+    shortUrl:{
+        type:DataTypes.VIRTUAL,
+        get(){
+            return `${process.env.BASE_URL}/${this.shortCode}`
+        }
     }
 }
 )
