@@ -6,6 +6,27 @@ import validUrl from "valid-url";
 
 const router = Router();
 
+router.get("/",(req,res)=>{
+  res.status(200).json({
+    messgae:"Url shortener is running!!!",
+    usage:{
+        createShortUrl:{
+            method:"POST",
+             endpoint: '/api/shorten',
+             body: {
+                    originalUrl: 'https://www.example.com'
+                }
+        },
+         redirectToOriginalUrl: {
+                method: 'GET',
+                endpoint: '/:shortCode'
+            }
+    }
+
+  })
+
+})                    
+
 router.get("/api/:shortCode",async (req,res)=>{
     
    try {
