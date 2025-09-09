@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import Url from './models/url.js';
+import Url from '../models/url.js';
 import { nanoid } from 'nanoid';
 import validUrl from "valid-url";
 
